@@ -8,9 +8,7 @@
 						<div class="grid grid-nogutter">
 							<div class="col-6 text-left ">
 								<span class="p-buttonset">
-									<Button @click="getAll()" label="Geral" class="p-button-plain p-button-text"/>
-									<Button @click="getDashboard('manufatura')" label="Manufatura" class="p-button-plain p-button-text"/>
-									<Button @click="getDashboard('rh')" label="Recursos Humanos" class="p-button-plain p-button-text"/>
+									<Button v-for="setor in setores" :key="setor" @click="getDashboard(setor.nickname)" class="p-button-plain p-button-text"><span class="font-bold">{{setor.name}}</span></Button>
 								</span>
 							</div>
 							<div class="col-6 text-right">
@@ -73,6 +71,7 @@ export default {
 		return {
 				display: false,
 				dataviewValue: null,
+				setores: null,
 				layout: 'grid',
 				sortKey: null,
 				sortOrder: null,
@@ -84,10 +83,9 @@ export default {
 		}
 	},
 	mounted() {
-		this.getAll();
+		this.getDashboard('geral');
+		this.getSetores();
 	},
-	beforeUnmount() {
-    },
 	created() {
 		this.dashboardService = new DashboardService();
 	},
@@ -117,11 +115,11 @@ export default {
 		goToView(id){
 			this.$router.push({name: 'view', params: {id: id}});
 		},
-		getAll(){
-			this.dashboardService.getDashboards().then(data => this.dataviewValue = data);
-		},
 		getDashboard(code){
 			this.dashboardService.getValues(code).then(data => this.dataviewValue = data);
+		},
+		getSetores(){
+			this.dashboardService.getSetores().then(data => this.setores = data);
 		}
 	}
 }

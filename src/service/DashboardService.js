@@ -2,6 +2,9 @@ export default class DashboardService {
 	async getDashboards() {
 		return fetch('data/dashboards.json').then(res => res.json()).then(d => d.data);
     }
+	async getSetores(){
+		return fetch('data/setores.json').then(res => res.json()).then(d => d.data);
+	}
 	async getValues(code) {
 		let _data = [];
 		await this.getDashboards()
